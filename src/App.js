@@ -31,6 +31,8 @@ function App() {
     setIsLoading(false);
   };
 
+  console.log(data);
+
   const handleChange = (e) => {
     setData({
       ...data,
@@ -69,7 +71,8 @@ function App() {
                   <span>Bank Phone</span>: {cardInfo?.bank?.phone}
                 </p>
                 <p>
-                  <span>Bank Website</span>: {cardInfo?.bank?.website}
+                  <span>Bank Website</span>:{' '}
+                  <a href={cardInfo.bank.website}>{cardInfo?.bank?.website}</a>
                 </p>
               </Fragment>
             )}
@@ -82,19 +85,23 @@ function App() {
               <Fragment>
                 <h3>Network</h3>
                 <p style={{ display: 'flex', alignItems: 'center' }}>
-                  <span>Name</span>:{' '}
-                  {cardInfo?.scheme !== '' && (
+                  <span>Name</span>:
+                  {(cardInfo?.scheme !== '' ||
+                    cardInfo?.scheme !== undefined) && (
                     <img
                       style={{ margin: '0 4px' }}
                       src={logoChecker(cardInfo?.scheme)}
-                      alt="amex"
+                      alt={cardInfo.scheme}
                       width="32"
                     />
                   )}
                   {cardInfo?.scheme}
                 </p>
                 <p>
-                  <span>Type</span>: {cardInfo?.type} / {cardInfo?.level}
+                  <span>Type</span>: {cardInfo?.type}
+                </p>
+                <p>
+                  <span>Level</span>: {cardInfo?.level}
                 </p>
               </Fragment>
             )}
