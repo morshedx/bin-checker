@@ -61,6 +61,7 @@
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
+  position: relative;
 }
 
 .input {
@@ -69,7 +70,20 @@
   border: 2px solid #e7e7e7;
   border-radius: 4px 0 0 4px;
   line-height: 30px;
-  padding: 0 20px;
+  font-size: 24px;
+  padding: 1px 20px 0px;
+}
+
+.clear-input {
+  position: absolute;
+  right: 20px;
+  background-color: transparent;
+  border: 0;
+  font-family: monospace;
+  padding: 0;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -77,6 +91,12 @@
 .input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.input::placeholder {
+  font-size: 14px;
+  position: relative;
+  top: -4px;
 }
 
 .submit {
@@ -148,7 +168,10 @@
 
 @media (max-width: 600px) {
   .grid {
+    grid-template-columns: repeat(1, 1fr);
     width: 100%;
-    flex-direction: column;
+  }
+  .input {
+    min-width: 180px;
   }
 }

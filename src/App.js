@@ -1,22 +1,28 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import emojiFlags from 'emoji-flags';
 import logoChecker from './utils/logo-checker';
 import Loader from './components/loader';
+import Close from './components/icons/close';
 import './App.css';
+
+const initialState = {
+  cardNumber: null,
+  data: [],
+  error: null,
+};
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [emoji, setEmoji] = useState([]);
-  const [data, setData] = useState({
-    cardNumber: null,
-    data: [],
-    error: null,
-  });
+  const [data, setData] = useState(initialState);
 
   const cardInfo = data?.data;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    data?.cardNumber?.length === 6 && fetchData();
+  }, [data.cardNumber]);
+
+  const fetchData = async () => {
     setIsLoading(true);
     const api_url = `https://cors-anywhere.herokuapp.com/https://bin-checker.net/api/${data?.cardNumber}/`;
     const res = await fetch(api_url);
@@ -31,8 +37,6 @@ function App() {
     setIsLoading(false);
   };
 
-  console.log(data);
-
   const handleChange = (e) => {
     setData({
       ...data,
@@ -40,28 +44,37 @@ function App() {
     });
   };
 
+  const handleClearInput = () => {
+    setData(initialState);
+  };
+
   return (
     <div className="container">
       <main className="main">
         <h1 className="title">Bin Checker</h1>
 
-        <form onSubmit={handleSubmit} className="description">
+        <div className="description">
           <input
             type="number"
-            className="input"
+            className={`input ${isLoading ? 'loading' : ''}`}
+            disabled={isLoading}
             onChange={handleChange}
             placeholder="Type first 6 digit of your card. Eg: 371599"
           />
-          <button type="submit" className="submit">
-            Check
+          <button onClick={handleClearInput} className="clear-input">
+            <Close />
           </button>
-        </form>
+          {/* <button type="submit" className="submit">
+            Check
+          </button> */}
+        </div>
 
         <div className="grid">
           <div className="card">
             {isLoading ? (
               <Loader />
             ) : (
+              // <Loader />
               <Fragment>
                 <h3>Issuer</h3>
                 <p>
@@ -127,16 +140,7 @@ function App() {
         </div>
       </main>
 
-      <footer className="footer">
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
-      </footer>
+      <footer className="footer"></footer>
     </div>
   );
 }
