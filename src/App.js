@@ -6,7 +6,7 @@ import Close from './components/icons/close';
 import './App.css';
 
 const initialState = {
-  cardNumber: null,
+  cardNumber: '',
   data: [],
   error: null,
 };
@@ -58,6 +58,7 @@ function App() {
             type="number"
             className={`input ${isLoading ? 'loading' : ''}`}
             disabled={isLoading}
+            value={data?.cardNumber}
             onChange={handleChange}
             placeholder="Type first 6 digit of your card. Eg: 371599"
           />
