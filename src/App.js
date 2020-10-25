@@ -72,7 +72,9 @@ function App() {
                 </p>
                 <p>
                   <span>Bank Website</span>:{' '}
-                  <a href={cardInfo.bank.website}>{cardInfo?.bank?.website}</a>
+                  <a href={cardInfo?.bank?.website}>
+                    {cardInfo?.bank?.website}
+                  </a>
                 </p>
               </Fragment>
             )}
