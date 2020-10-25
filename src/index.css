@@ -1,10 +1,46 @@
+@font-face {
+  font-family: 'Metropolis Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Metropolis Regular'), url('./assets/fonts/Metropolis-Regular.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Metropolis Regular Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Metropolis Regular Italic'), url('./assets/fonts/Metropolis-RegularItalic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Metropolis Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Metropolis Medium'), url('./assets/fonts/Metropolis-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Metropolis Medium Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Metropolis Medium Italic'), url('./assets/fonts/Metropolis-MediumItalic.woff') format('woff');
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Metropolis Regular', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button, input {
+  font-family: 'Metropolis Regular',
+  sans-serif;
+}
+
+h1,h2,h3,h4 {
+  font-family: 'Metropolis Medium';
 }
 
 code {
