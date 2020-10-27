@@ -1,4 +1,5 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import emojiFlags from 'emoji-flags';
 import logoChecker from './utils/logo-checker';
 import Loader from './components/loader';
@@ -6,59 +7,68 @@ import Close from './components/icons/close';
 import './App.css';
 
 const initialState = {
-  cardNumber: '',
   data: [],
-  error: null,
 };
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [emoji, setEmoji] = useState([]);
+  const inputRef = useRef();
+  const [cardNumber, setCardNumber] = useState('');
   const [data, setData] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const [emoji, setEmoji] = useState([]);
 
-  const cardInfo = data?.data;
+  const cardInfo = data.data;
+  console.log(new Date());
 
   useEffect(() => {
-    data?.cardNumber?.length === 6 && fetchData();
-  }, [data.cardNumber]);
+    inputRef.current.focus();
+  });
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    const api_url = `https://cors-anywhere.herokuapp.com/https://bin-checker.net/api/${data?.cardNumber}/`;
-    const res = await fetch(api_url);
-    const json = await res.json();
-    json.country.code !== '' &&
-      setEmoji(emojiFlags.countryCode(json.country.code));
-    setData({
-      ...data,
-      data: json,
-      error: null,
-    });
-    setIsLoading(false);
+  useEffect(() => {
+    cardNumber?.length === 6 && getBinData();
+  }, [cardNumber]);
+
+  const getBinData = async () => {
+    const api = `https://api.bincodes.com/bin/json/${process.env.REACT_APP_BINCODES_API_KEY}/${cardNumber}/`;
+    try {
+      setLoading(true);
+      const response = await axios.get(api);
+      setData({
+        ...data,
+        data: response.data,
+      });
+      response.data.error === '' &&
+        setEmoji(emojiFlags.countryCode(response.data.countrycode));
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleChange = (e) => {
-    setData({
-      ...data,
-      cardNumber: e.target.value,
-    });
+    setCardNumber(e.target.value);
   };
 
   const handleClearInput = () => {
-    setData(initialState);
+    setCardNumber('');
+    inputRef.current.focus();
   };
 
   return (
     <div className="container">
       <main className="main">
-        <h1 className="title">Bin Checker</h1>
+        <h1 className="title">
+          <abbr title="Bank Identification Number">BIN</abbr>/
+          <abbr title="Issuer Identification Numbers">IIN</abbr> Checker
+        </h1>
 
         <div className="description">
           <input
             type="number"
-            className={`input ${isLoading ? 'loading' : ''}`}
-            disabled={isLoading}
-            value={data?.cardNumber}
+            ref={inputRef}
+            className={`input ${loading ? 'loading' : ''}`}
+            disabled={loading}
+            value={cardNumber}
             onChange={handleChange}
             placeholder="Type first 6 digit of your card. Eg: 371599"
           />
@@ -69,49 +79,49 @@ function App() {
             Check
           </button> */}
         </div>
+        {data.data.message && (
+          <p className="message warning">{data.data.message}</p>
+        )}
 
         <div className="grid">
           <div className="card">
-            {isLoading ? (
+            {loading ? (
               <Loader />
             ) : (
               // <Loader />
               <Fragment>
                 <h3>Issuer</h3>
                 <p>
-                  <span>Bank Name</span>: {cardInfo?.bank?.name}
+                  <span>Bank Name</span>: {cardInfo?.bank}
                 </p>
                 <p>
-                  <span>Bank Phone</span>: {cardInfo?.bank?.phone}
+                  <span>Bank Phone</span>: {cardInfo?.phone}
                 </p>
                 <p>
                   <span>Bank Website</span>:{' '}
-                  <a href={cardInfo?.bank?.website}>
-                    {cardInfo?.bank?.website}
-                  </a>
+                  <a href={cardInfo.website}>{cardInfo.website}</a>
                 </p>
               </Fragment>
             )}
           </div>
 
           <div className="card">
-            {isLoading ? (
+            {loading ? (
               <Loader />
             ) : (
               <Fragment>
                 <h3>Network</h3>
                 <p style={{ display: 'flex', alignItems: 'center' }}>
                   <span>Name</span>:
-                  {(cardInfo?.scheme !== '' ||
-                    cardInfo?.scheme !== undefined) && (
+                  {(cardInfo.card !== '' || cardInfo.card !== undefined) && (
                     <img
                       style={{ margin: '0 4px' }}
-                      src={logoChecker(cardInfo?.scheme)}
-                      alt={cardInfo.scheme}
+                      src={logoChecker(cardInfo.card)}
+                      alt={cardInfo.card}
                       width="32"
                     />
                   )}
-                  {cardInfo?.scheme}
+                  {cardInfo.card}
                 </p>
                 <p>
                   <span>Type</span>: {cardInfo?.type}
@@ -124,16 +134,16 @@ function App() {
           </div>
 
           <div className="card">
-            {isLoading ? (
+            {loading ? (
               <Loader />
             ) : (
               <Fragment>
                 <h3>Country</h3>
                 <p>
-                  <span>Name</span>: {emoji.emoji} {cardInfo?.country?.name}
+                  <span>Name</span>: {emoji.emoji} {cardInfo.country}
                 </p>
                 <p>
-                  <span>Currency</span>: {cardInfo?.country?.currency}
+                  <span>Country Code</span>: {cardInfo.countrycode}
                 </p>
               </Fragment>
             )}

@@ -1,19 +1,14 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .main {
   padding: 5rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .footer {
@@ -49,7 +44,7 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 3.5rem;
+  font-size: 3rem;
   margin-bottom: 2rem;
 }
 
@@ -62,16 +57,18 @@
   line-height: 1.5;
   font-size: 1.5rem;
   position: relative;
+  max-width: 341px;
+  margin: 0 auto;
 }
 
 .input {
   min-height: 45px;
-  min-width: 300px;
   border: 2px solid #e7e7e7;
   border-radius: 4px 0 0 4px;
   line-height: 30px;
   font-size: 24px;
   padding: 1px 20px 0px;
+  width: calc(100% - 44px);
 }
 
 .clear-input {
@@ -96,7 +93,7 @@
 .input::placeholder {
   font-size: 14px;
   position: relative;
-  top: -4px;
+  top: -3px;
 }
 
 .submit {
@@ -111,6 +108,13 @@
 /* Firefox */
 .input[type=number] {
   -moz-appearance: textfield;
+}
+
+.message.warning {
+  color: red;
+  max-width: 300px;
+  margin: 30px auto -20px;
+  text-align: center;
 }
 
 .code {
