@@ -110,11 +110,17 @@
   -moz-appearance: textfield;
 }
 
-.message.warning {
+.message {
   color: red;
   max-width: 300px;
   margin: 30px auto -20px;
   text-align: center;
+}
+.error {
+  color: red;
+}
+.warning {
+  color: #856404;
 }
 
 .code {

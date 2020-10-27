@@ -80,7 +80,10 @@ function App() {
           </button> */}
         </div>
         {data.data.message && (
-          <p className="message warning">{data.data.message}</p>
+          <Fragment>
+            <p className="message error">{data.data.message}.</p>
+            <p className="message warning">Please wait until next day.</p>
+          </Fragment>
         )}
 
         <div className="grid">
