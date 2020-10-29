@@ -168,6 +168,11 @@
   line-height: 2;
 }
 
+.card a {
+  text-transform: lowercase;
+  text-decoration: none;
+}
+
 .card p span {
   font-family: 'Metropolis Medium';
 }

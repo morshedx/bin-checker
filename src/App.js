@@ -19,6 +19,8 @@ function App() {
 
   const cardInfo = data.data;
 
+  console.log(emoji);
+
   useEffect(() => {
     inputRef.current.focus();
   });
@@ -32,11 +34,13 @@ function App() {
     try {
       setLoading(true);
       const response = await axios.get(api);
+      console.log(response);
+      console.log(response.data.countrycode);
       setData({
         ...data,
         data: response.data,
       });
-      response.data.error === '' &&
+      response.data.countrycode !== '' &&
         setEmoji(emojiFlags.countryCode(response.data.countrycode));
       setLoading(false);
     } catch (error) {
@@ -51,6 +55,20 @@ function App() {
   const handleClearInput = () => {
     setCardNumber('');
     inputRef.current.focus();
+  };
+
+  const website = (url) => {
+    return (
+      url &&
+      url
+        .replace('http://', '')
+        .replace('HTTP://', '')
+        .replace('WWW.', '')
+        .replace('www.', '')
+        .replace('HTTP://WWW.', '')
+        .replace('http://www.', '')
+        .replace(/\/$/, '')
+    );
   };
 
   return (
@@ -101,7 +119,12 @@ function App() {
                 </p>
                 <p>
                   <span>Bank Website</span>:{' '}
-                  <a href={cardInfo.website}>{cardInfo.website}</a>
+                  <a
+                    href={`http://${website(cardInfo.website)}`}
+                    target="_blank"
+                  >
+                    {website(cardInfo.website)}
+                  </a>
                 </p>
               </Fragment>
             )}
