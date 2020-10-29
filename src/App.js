@@ -18,7 +18,6 @@ function App() {
   const [emoji, setEmoji] = useState([]);
 
   const cardInfo = data.data;
-  console.log(new Date());
 
   useEffect(() => {
     inputRef.current.focus();
