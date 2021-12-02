@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import emojiFlags from 'emoji-flags';
+import LogRocket from 'logrocket';
 import logoChecker from './utils/logo-checker';
 import Loader from './components/loader';
 import Close from './components/icons/close';
@@ -9,6 +10,8 @@ import './App.css';
 const initialState = {
   data: [],
 };
+
+LogRocket.init('tetfxd/nextcommerce');
 
 function App() {
   const inputRef = useRef();
